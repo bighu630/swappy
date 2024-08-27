@@ -72,9 +72,9 @@ auto_save=false
 <hr>
 
 - `b`: Switch to Brush
-- `t`: Switch to Text
+- `e` `t`: Switch to Text
 - `r`: Switch to Rectangle
-- `o`: Switch to Ellipse
+- `c` `o`: Switch to Ellipse
 - `a`: Switch to Arrow
 - `d`: Switch to Blur (`d` stands for droplet)
 
@@ -88,7 +88,7 @@ auto_save=false
 - `Plus`: Increase Stroke Size
 - `Equal`: Reset Stroke Size
 - `f`: Toggle Shape Filling
-- `k`: Clear Paints (cannot be undone)
+- `x` `k`: Clear Paints (cannot be undone)
 
 <hr>
 
