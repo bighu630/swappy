@@ -409,6 +409,7 @@ void window_keypress_handler(GtkWidget *widget, GdkEventKey *event,
         switch_mode_to_text(state);
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(state->ui->text), true);
         break;
+      case GDK_KEY_s:
       case GDK_KEY_r:
         switch_mode_to_rectangle(state);
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(state->ui->rectangle),
