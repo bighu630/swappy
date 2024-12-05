@@ -2,6 +2,10 @@
 
 #include <cairo/cairo.h>
 #include <gio/gunixoutputstream.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
 
 GdkPixbuf *pixbuf_get_from_state(struct swappy_state *state) {
   guint width = cairo_image_surface_get_width(state->rendering_surface);
@@ -85,6 +89,51 @@ void pixbuf_save_to_file(GdkPixbuf *pixbuf, char *file) {
   } else {
     write_file(pixbuf, file);
   }
+}
+
+int pixbuf_upload_to_net(GdkPixbuf *pixbuf,char *picgo_path) {
+    char* tempPath = "/tmp/swappy_upload_temp.png";
+    pixbuf_save_to_file(pixbuf, tempPath);
+    char* url = upload_file_to_net(tempPath,picgo_path);
+    char* exec = malloc(strlen("wl-copy ")+strlen(url)+1);
+    strcpy(exec,"wl-copy ");
+    strcat(exec,url);
+    int ret = system(exec);
+    free(exec);
+    return ret;
+}
+
+char* upload_file_to_net(char *path,char *picgo_path){
+    FILE *fp;
+    char buffer[64];
+    char *last_line = NULL;
+
+    if (strlen(picgo_path) == 0) {
+        picgo_path = "picgo";
+    }
+
+    // 打开一个管道执行命令
+    fp = popen(strcat(strcat(picgo_path," u "), path), "r");
+    if (fp == NULL) {
+        perror("popen failed");
+        return "";
+    }
+
+    // 读取命令输出
+    while (fgets(buffer, sizeof(buffer), fp) != NULL) {
+        last_line = buffer;
+    }
+
+    // 关闭管道
+    pclose(fp);
+    size_t len = strcspn(last_line, "\n");
+
+    // 如果找到了换行符，就把它替换为 '\0' 来去除
+    if (last_line[len] == '\n') {
+        last_line[len] = '\0';
+    }
+
+    return last_line;
 }
 
 void pixbuf_scale_surface_from_widget(struct swappy_state *state,

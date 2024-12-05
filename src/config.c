@@ -14,6 +14,7 @@ static void print_config(struct swappy_config *config) {
   g_info("printing config:");
   g_info("config_dir: %s", config->config_file);
   g_info("save_dir: %s", config->save_dir);
+  g_info("picgo_path: %s", config->picgo_path);
   g_info("save_filename_format: %s", config->save_filename_format);
   g_info("show_panel: %d", config->show_panel);
   g_info("line_size: %d", config->line_size);
@@ -74,6 +75,7 @@ static void load_config_from_file(struct swappy_config *config,
   GKeyFile *gkf;
   const gchar *group = "Default";
   gchar *save_dir = NULL;
+  gchar *picgo_path = NULL;
   gchar *save_filename_format = NULL;
   gboolean show_panel;
   gchar *save_dir_expanded = NULL;
@@ -129,6 +131,17 @@ static void load_config_from_file(struct swappy_config *config,
     config->save_filename_format = save_filename_format;
   } else {
     g_info("save_filename_format is missing in %s (%s)", file, error->message);
+    g_error_free(error);
+    error = NULL;
+  }
+
+
+  picgo_path = g_key_file_get_string(gkf, group, "picgo_path", &error);
+
+  if (error == NULL) {
+    config->picgo_path= picgo_path;
+  } else {
+    g_info("picgo_path is missing in %s (%s)", file, error->message);
     g_error_free(error);
     error = NULL;
   }

@@ -245,6 +245,14 @@ static void save_state_to_file_or_folder(struct swappy_state *state,
   }
 }
 
+static void save_state_to_net(struct swappy_state *state) {
+    GdkPixbuf *pixbuf = pixbuf_get_from_state(state);
+
+    if (pixbuf_upload_to_net(pixbuf,state->config->picgo_path) == -1){
+        perror("wl-copy failed");
+    }
+}
+
 static void maybe_save_output_file(struct swappy_state *state) {
   if (state->config->auto_save) {
     save_state_to_file_or_folder(state, state->output_file);
@@ -314,6 +322,10 @@ void save_clicked_handler(GtkWidget *widget, struct swappy_state *state) {
 
 void clear_clicked_handler(GtkWidget *widget, struct swappy_state *state) {
   action_clear(state);
+}
+
+void upload_clicked_handler(GtkWidget *widget, struct swappy_state *state) {
+    save_state_to_net(state);
 }
 
 void copy_clicked_handler(GtkWidget *widget, struct swappy_state *state) {

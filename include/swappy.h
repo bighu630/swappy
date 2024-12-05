@@ -147,6 +147,7 @@ struct swappy_config {
   char *config_file;
   char *save_dir;
   char *save_filename_format;
+  char *picgo_path;
   gint8 paint_mode;
   gboolean fill_shape;
   gboolean show_panel;

@@ -5,7 +5,6 @@
 #include <unistd.h>
 
 #include "pixbuf.h"
-#include "util.h"
 
 #define gtk_clipboard_t GtkClipboard
 #define gdk_pixbuf_t GdkPixbuf
